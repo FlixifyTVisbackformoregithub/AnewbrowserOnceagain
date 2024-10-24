@@ -6,7 +6,8 @@ function createWindow() {
         height: 768,
         webPreferences: {
             nodeIntegration: true,
-            contextIsolation: false, // Enables access to Node.js
+            contextIsolation: true,
+            preload: './preload.js' // For security reasons
         },
     });
 
@@ -14,3 +15,15 @@ function createWindow() {
 }
 
 app.whenReady().then(createWindow);
+
+app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') {
+        app.quit();
+    }
+});
+
+app.on('activate', () => {
+    if (BrowserWindow.getAllWindows().length === 0) {
+        createWindow();
+    }
+});
