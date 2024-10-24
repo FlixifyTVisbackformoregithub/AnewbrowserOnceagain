@@ -1,16 +1,24 @@
 const { remote } = require('electron');
 
 const webview = document.getElementById('webview');
-const goButton = document.getElementById('go');
 const backButton = document.getElementById('back');
 const forwardButton = document.getElementById('forward');
 const refreshButton = document.getElementById('refresh');
 const urlInput = document.getElementById('url');
 
-goButton.addEventListener('click', () => {
-    webview.loadURL(urlInput.value);
+// Load URL when Enter key is pressed
+urlInput.addEventListener('keypress', (event) => {
+    if (event.key === 'Enter') {
+        const url = urlInput.value;
+        // Check if the URL starts with 'http://' or 'https://'
+        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+            urlInput.value = 'http://' + url; // Default to http
+        }
+        webview.loadURL(urlInput.value);
+    }
 });
 
+// Navigation Buttons
 backButton.addEventListener('click', () => {
     webview.goBack();
 });
